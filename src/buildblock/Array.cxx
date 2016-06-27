@@ -62,4 +62,18 @@ template class Array<4, short>;
 template class Array<4,unsigned short>;
 template class Array<4,float>;
 
+ bool 
+is_interfile_signature(const char * const signature)
+{
+  // checking for "interfile :"
+  const char * pos_of_colon = strchr(signature, ':');
+  if (pos_of_colon == NULL)
+    return false;
+  string keyword(signature, pos_of_colon-signature);
+  return (
+    standardise_interfile_keyword(keyword) == 
+    standardise_interfile_keyword("interfile"));
+}
+
+
 END_NAMESPACE_STIR
