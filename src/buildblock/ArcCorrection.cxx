@@ -193,6 +193,20 @@ ArcCorrection::
 }
 
 
+bool 
+is_interfile_signature(const char * const signature)
+{
+  // checking for "interfile :"
+  const char * pos_of_colon = strchr(signature, ':');
+  if (pos_of_colon == NULL)
+    return false;
+  string keyword(signature, pos_of_colon-signature);
+  return (
+    standardise_interfile_keyword(keyword) == 
+    standardise_interfile_keyword("interfile"));
+}
+
+
 Succeeded
 ArcCorrection::
 set_up(const shared_ptr<ProjDataInfo>& noarc_corr_proj_data_info_sptr)
@@ -330,19 +344,6 @@ do_arc_correction(const SegmentBySinogram<float>& in) const
 			       in.get_segment_num());
   do_arc_correction(out, in);
   return out;
-}
-
-
-void
-ArcCorrection::
-do_arc_correction(SegmentByView<float>& out, const SegmentByView<float>& in) const
-{
-  assert(*in.get_proj_data_info_ptr() == *_noarc_corr_proj_data_info_sptr);
-  assert(*out.get_proj_data_info_ptr() == *_arc_corr_proj_data_info_sptr);
-  assert(out.get_segment_num() == in.get_segment_num());
-  for (int view_num=in.get_min_view_num(); view_num<=in.get_max_view_num(); ++view_num)
-    for (int axial_pos_num=in.get_min_axial_pos_num(); axial_pos_num<=in.get_max_axial_pos_num(); ++axial_pos_num)
-      do_arc_correction(out[view_num][axial_pos_num], in[view_num][axial_pos_num]);
 }
 
 
