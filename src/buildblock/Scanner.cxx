@@ -612,11 +612,29 @@ check_consistency() const
     else
     {
       if (get_num_detectors_per_ring() % get_num_transaxial_crystals_per_singles_unit() != 0)
+        <<< <<< < HEAD
       {
         warning("Scanner %s: inconsistent transaxial singles unit info:\n"
-                "\tnum_detectors_per_ring %d should be a multiple of num_transaxial_crystals_per_singles_unit %d",
+        "\tnum_detectors_per_ring %d should be a multiple of num_transaxial_crystals_per_singles_unit %d",
+        this->get_name().c_str(),
+        get_num_detectors_per_ring(), get_num_transaxial_crystals_per_singles_unit());
+        return Succeeded::no;
+      }
+      if (get_num_transaxial_crystals_per_bucket() % get_num_transaxial_crystals_per_singles_unit() != 0)
+      {
+        warning("Scanner %s: inconsistent transaxial singles unit info:\n"
+                "\tnum_transaxial_crystals_per_bucket %d should be a multiple of num_transaxial_crystals_per_singles_unit %d",
                 this->get_name().c_str(),
-                get_num_detectors_per_ring(), get_num_transaxial_crystals_per_singles_unit());
+                get_num_transaxial_crystals_per_bucket(), get_num_transaxial_crystals_per_singles_unit());
+        return Succeeded::no;
+      }
+
+      == == == =
+      {
+        warning("Scanner %s: inconsistent transaxial singles unit info:\n"
+        "\tnum_detectors_per_ring %d should be a multiple of num_transaxial_crystals_per_singles_unit %d",
+        this->get_name().c_str(),
+        get_num_detectors_per_ring(), get_num_transaxial_crystals_per_singles_unit());
         return Succeeded::no;
       }
 
@@ -628,6 +646,8 @@ check_consistency() const
                 get_num_transaxial_crystals_per_bucket(), get_num_transaxial_crystals_per_singles_unit());
         return Succeeded::no;
       }
+
+      >>> >>> > origin / master
     }
   }
   {
@@ -712,14 +732,18 @@ string
 Scanner::parameter_info() const
 {
   // warning: these should match the parsing keywords in InterfilePDFSHeader
-  #ifdef BOOST_NO_STRINGSTREAM
+#ifdef BOOST_NO_STRINGSTREAM
   // dangerous for out-of-range, but 'old-style' ostrstream seems to need this
   char str[10000];
   ostrstream s(str, 10000);
-  #else
+#else
   std::ostringstream s;
-  #endif
-  s << "Scanner parameters:= " << '\n';
+  <<< <<< < HEAD
+#endif
+  == == == =
+#endif
+    >>> >>> > origin / master
+    s << "Scanner parameters:= " << '\n';
   s << "Scanner type := " << get_name() << '\n';
   s << "Number of rings                          := " << num_rings << '\n';
   s << "Number of detectors per ring             := " << get_num_detectors_per_ring() << '\n';
@@ -753,18 +777,26 @@ Scanner::parameter_info() const
 
 string Scanner::list_names() const
 {
-  #ifdef BOOST_NO_STRINGSTREAM
+#ifdef BOOST_NO_STRINGSTREAM
   // dangerous for out-of-range, but 'old-style' ostrstream seems to need this
   char str[3000];
   ostrstream s(str, 3000);
-  #else
+#else
   std::ostringstream s;
-  #endif
-  #ifdef _MSC_VER
+  <<< <<< < HEAD
+#endif
+#ifdef _MSC_VER
   // work-around VC bug
   std::
-  #endif
-  list<string>::const_iterator iterator = list_of_names.begin();
+#endif
+  == == == =
+#endif
+#ifdef _MSC_VER
+    // work-around VC bug
+    std::
+#endif
+    >>> >>> > origin / master
+    list<string>::const_iterator iterator = list_of_names.begin();
   s << *iterator;
   ++iterator;
 
@@ -890,14 +922,22 @@ Scanner::get_scanner_from_name(const string& name)
 string Scanner:: list_all_names()
 {
   Scanner* scanner_ptr;
-  #ifdef BOOST_NO_STRINGSTREAM
-  // dangerous for out-of-range, but 'old-style' ostrstream seems to need this
-  char str[30000];
+  <<< <<< < HEAD
+#ifdef BOOST_NO_STRINGSTREAM
+  == == == =
+#ifdef BOOST_NO_STRINGSTREAM
+    >>> >>> > origin / master
+    // dangerous for out-of-range, but 'old-style' ostrstream seems to need this
+    char str[30000];
   ostrstream s(str, 30000);
-  #else
-  std::ostringstream s;
-  #endif
-  Type type = E931;
+#else
+    std::ostringstream s;
+  <<< <<< < HEAD
+#endif
+  == == == =
+#endif
+    >>> >>> > origin / master
+    Type type = E931;
 
   while (type != Unknown_scanner)
   {
